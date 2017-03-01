@@ -1,0 +1,29 @@
+playpen-zuul ansible_ssh_host=169.44.171.67 ansible_ssh_user=ubuntu
+playpen-nodepool ansible_ssh_host=169.44.171.68 ansible_ssh_user=ubuntu
+playpen-logs ansible_ssh_host=169.44.171.69 ansible_ssh_user=ubuntu
+
+[zuul]
+playpen-zuul
+
+[mergers]
+playpen-zuul
+
+[monitoring]
+playpen-logs
+
+[nodepool]
+playpen-nodepool
+
+[mysql]
+playpen-nodepool
+
+[zookeeper]
+playpen-nodepool
+
+[log]
+playpen-logs
+
+[jamielennox-new-playpen]
+playpen-zuul
+playpen-nodepool
+playpen-logs

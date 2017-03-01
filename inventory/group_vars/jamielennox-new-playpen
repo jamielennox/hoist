@@ -1,0 +1,60 @@
+zookeeper_myid: 1
+
+logs_ip: "{{ hostvars['playpen-logs']['ansible_default_ipv4']['address'] }}"
+zuul_ip: "{{ hostvars['playpen-zuul']['ansible_default_ipv4']['address'] }}"
+
+elasticsearch_jvm_heap_size: 250m
+
+filebeat_output_logstash_hosts:
+  - "{{ logs_ip }}:5044"
+
+zuul_components:
+  - zuul-launcher
+  - zuul-merger
+  - zuul-server
+
+nodepool_mysql_host: localhost
+nodepool_gearman_servers:
+  - host: "{{ zuul_ip }}"
+    port: 4730
+
+nodepool_labels:
+  - name: ubuntu-xenial
+    image: ubuntu-xenial
+    min-ready: 2
+    providers:
+      - name: jamielennox
+  - name: ubuntu-hoist
+    image: ubuntu-xenial
+    min-ready: 1
+    subnodes: 3
+    ready-script: subnode-ssh.sh
+    providers:
+      - name: jamielennox
+
+nodepool_providers:
+  - name: jamielennox
+    cloud: jamielennox
+    max-servers: 10
+    networks:
+      - name: internal
+        public: True
+    images:
+      - name: ubuntu-xenial
+        min-ram: 2048
+        diskimage: ubuntu-xenial
+        private-key: /var/lib/nodepool/.ssh/id_rsa
+        user-home: /home/bonnyci
+        username: bonnyci
+
+nodepool_statsd_enable: no
+nodepool_zmq_publishers:
+  - "tcp://{{ zuul_ip }}:8888"
+nodepool_use_datadog_logging: yes
+
+bastion_clouds:
+  - jamielennox
+
+zuul_merger_url: "http://{{ zuul_ip }}:{{ zuul_merger_apache_port }}/p"
+zuul_logs_url: "http://{{ logs_ip }}"
+zuul_use_datadog_logging: yes
