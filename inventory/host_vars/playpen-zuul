@@ -1,0 +1,4 @@
+zuul_components:
+  - zuul-launcher
+  - zuul-merger
+  - zuul-server
