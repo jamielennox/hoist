@@ -1,0 +1,13 @@
+[Unit]
+Description=nodepoold Service
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=nodepool
+Group=nodepool
+EnvironmentFile=-/etc/default/nodepool
+ExecStart={{ nodepool_venv_path }}/bin/nodepool-webapp -d -l /etc/nodepool/nodepool-webapp_logging.conf
+
+[Install]
+WantedBy=multi-user.target

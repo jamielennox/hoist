@@ -36,13 +36,13 @@ pipelines:
     trigger:
       github:
         - event: status
-          status: "anne-bonny:check_github:success"
+          status: "bonnyci[bot]:check_github:success"
         - event: pr-review
           state: 'approved'
         - event: pr-comment
           comment: (?i)^\s*gate-recheck\s*$
     require:
-      status: "anne-bonny:check_github:success"
+      status: "bonnyci[bot]:check_github:success"
       approval:
         - review: 2
     reject:
@@ -106,6 +106,12 @@ projects:
       - tox_py27
 
   - name: rust-unofficial/too-many-lists
+    check_github:
+      - bonnyci-run-check
+    gate_github:
+      - bonnyci-run-gate
+
+  - name: jamielennox/sandbox
     check_github:
       - bonnyci-run-check
     gate_github:

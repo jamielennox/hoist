@@ -8,6 +8,7 @@
     mode: 0640
   with_items:
     - nodepool-builder
+    - nodepool-webapp
     - nodepoold
 
 - name: Install systemd unit files
@@ -19,6 +20,7 @@
     mode: 0644
   with_items:
     - nodepool-builder
+    - nodepool-webapp
     - nodepoold
   notify:
     - Reload systemd units
@@ -33,4 +35,5 @@
     service: "{{ item }}"
   with_items:
     - nodepool-builder
+    - nodepool-webapp
     - nodepoold

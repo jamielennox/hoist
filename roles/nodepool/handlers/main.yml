@@ -20,6 +20,7 @@
     state: restarted
   with_items:
     - nodepool-builder
+    - nodepool-webapp
     - nodepoold
 
 - name: Restart nodepool builder

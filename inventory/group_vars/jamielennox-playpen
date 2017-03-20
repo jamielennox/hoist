@@ -1,0 +1,70 @@
+zookeeper_myid: 1
+
+logs_ip: "{{ hostvars['playpen-logs']['ansible_default_ipv4']['address'] }}"
+nodepool_ip: "{{ hostvars['playpen-nodepool']['ansible_default_ipv4']['address'] }}"
+zuul_ip: "{{ hostvars['playpen-zuul']['ansible_default_ipv4']['address'] }}"
+
+bonnyci_logs_scp_host: "{{ logs_ip }}"
+
+elasticsearch_jvm_heap_size: 250m
+
+filebeat_output_logstash_hosts:
+  - "{{ logs_ip }}:5044"
+
+# zuul_git_repo_url: https://github.com/jamielennox/zuul
+# zuul_git_branch: integration-fixup-pieces-3
+zuul_git_repo_url: https://github.com/openstack-infra/zuul
+zuul_git_branch: feature/zuulv3
+zuul_zuul_v3: True
+
+nodepool_git_repo_url: https://github.com/jamielennox/nodepool
+nodepool_git_version: zuulv3-fixup
+
+nodepool_mysql_host: localhost
+nodepool_gearman_servers:
+  - host: "{{ zuul_ip }}"
+    port: 4730
+nodepool_zuul_v3: True
+
+nodepool_labels:
+  - name: ubuntu-xenial
+    image: ubuntu-xenial
+    min-ready: 2
+    providers:
+      - name: jamielennox
+
+nodepool_providers:
+  - name: jamielennox
+    cloud: jamielennox
+    max-servers: 10
+    networks:
+      - name: internal
+        public: True
+    images:
+      - name: ubuntu-xenial
+        min-ram: 2048
+        diskimage: ubuntu-xenial
+        private-key: /var/lib/nodepool/.ssh/id_rsa
+        user-home: /home/bonnyci
+        username: bonnyci
+
+nodepool_statsd_enable: no
+nodepool_zmq_publishers:
+  - "tcp://{{ zuul_ip }}:8888"
+# nodepool_use_datadog_logging: yes
+
+bastion_clouds:
+  - jamielennox
+
+zuul_merger_url: "http://{{ zuul_ip }}:{{ zuul_merger_apache_port }}/p"
+zuul_logs_url: "http://169.44.171.69"
+# zuul_use_datadog_logging: yes
+
+zuul_connections:
+  gerrithub:
+    driver: gerrit
+    user: jamielennox
+    server: review.gerrithub.io
+    sshkey: /var/lib/zuul/.ssh/id_rsa
+
+zuul_zookeeper_hosts: "{{ nodepool_ip }}:2181"
