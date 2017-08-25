@@ -9,12 +9,14 @@ elk.opentech.bonnyci.org
 logs.opentech.bonnyci.org
 nodepool.opentech.bonnyci.org
 zuul.opentech.bonnyci.org
+ze01.internal.opentech.bonnyci.org
 
 [production]
 elk.opentech.bonnyci.org
 logs.opentech.bonnyci.org
 nodepool.opentech.bonnyci.org
 zuul.opentech.bonnyci.org
+ze01.internal.opentech.bonnyci.org
 
 [nodepool]
 nodepool.opentech.bonnyci.org
@@ -22,5 +24,17 @@ nodepool.opentech.bonnyci.org
 [zookeeper]
 nodepool.opentech.bonnyci.org
 
-[zuul]
+[zuul-scheduler]
 zuul.opentech.bonnyci.org
+
+[zuul-merger]
+zuul.opentech.bonnyci.org
+
+[zuul-web]
+zuul.opentech.bonnyci.org
+
+[zuul-executor]
+ze01.internal.opentech.bonnyci.org
+
+[opentech-sl-zuul-exectuors:children]
+zuul-executor
